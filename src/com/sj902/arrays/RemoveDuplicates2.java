@@ -4,22 +4,12 @@ public class RemoveDuplicates2 {
     //Input: nums = [1,1,1,2,2,3]
     //Output: 5, nums = [1,1,2,2,3,_]
     public int removeDuplicates(int[] nums) {
-        int n = nums.length;
-        int largest = nums[0];
-        int l = 1;
-        int r = 1;
-        int largestCount = 1;
-
-
-        while (l < n && r < n) {
-            if (nums[l] == largest && largestCount<2) {
-                ++largestCount;
-                ++l;
-            } else if(nums[l] == largest && largestCount>=2){
-
+        int i = 0;
+        for (int e:nums) {
+            if(i == 0 || i == 1 || e!=nums[i-2]){
+                ++i;
             }
-
         }
-        return 0;
+        return i;
     }
 }
