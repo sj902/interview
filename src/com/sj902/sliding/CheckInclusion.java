@@ -35,7 +35,7 @@ public class CheckInclusion {
             char next = t.charAt(end);
             tmap.put(next, tmap.getOrDefault(next, 0) + 1);
         }
-        if (isEqual(map, tmap)) return true;
+        if (isEqual(tmap, map)) return true;
         return false;
     }
 
