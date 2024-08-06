@@ -23,6 +23,6 @@ public class SimplifyPath {
         while (!stack.isEmpty()){
             sb.insert(0,"/"+stack.pop());
         }
-        return sb.toString().equalsIgnoreCase()""?"/":sb.toString();
+        return sb.toString().equalsIgnoreCase("")?"/":sb.toString();
     }
 }
