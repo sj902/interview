@@ -40,8 +40,7 @@ public class ShortestBridge {
                 int i = Integer.parseInt(a.split("-")[0]);
                 int j = Integer.parseInt(a.split("-")[1]);
                 if (grid[i][j] == 1) {
-                    System.out.println(a + " short");
-                    return res;
+                    return res-1;
                 }
                 for (int[] dir : dirs) {
                     int newI = i + dir[0];
@@ -51,16 +50,13 @@ public class ShortestBridge {
                     if (newJ >= 0 && newI >= 0 && newI < grid.length && newJ < grid.length && !visited.contains(z)) {
                         q.add(z);
                         visited.add(z);
-                        grid[newI][newI] = 3;
                     }
                 }
 
             }
             res = res + 1;
         }
-
-
-        return res;
+        return -1;
 
     }
 
