@@ -10,7 +10,7 @@ public class ShortestBridge {
 
     public int shortestBridge(int[][] grid) {
         int n = grid.length;
-        visited = new HashSet();
+        visited = new HashSet<>();
         dirs = new int[][]{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 
         int srcI = -1;
