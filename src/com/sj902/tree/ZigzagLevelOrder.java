@@ -1,16 +1,14 @@
-package com.sj902.graph;
+package com.sj902.tree;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
-public class LevelOrderTraversal {
-    public List<List<Integer>> levelOrder(TreeNode root) {
+public class ZigzagLevelOrder {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
         List<List<Integer>> res= new ArrayList<>();
         if(root == null) return res;
         Queue<TreeNode> q = new LinkedList<>();
         q.add(root);
+        boolean f = true;
         while (!q.isEmpty()){
             int l = q.size();
             List<Integer> list = new ArrayList<>();
@@ -20,7 +18,13 @@ public class LevelOrderTraversal {
                 if(t.left!=null)q.add(t.left);
                 if(t.right!=null)q.add(t.right);
             }
-            res.add(list);
+            if(f) {
+                res.add(list);
+            } else{
+                Collections.reverse(list);
+                res.add(list);
+            }
+            f = !f;
         }
         return res;
     }

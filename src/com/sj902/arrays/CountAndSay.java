@@ -2,12 +2,8 @@ package com.sj902.arrays;
 
 public class CountAndSay {
     public String countAndSay(int n) {
-
-    }
-
-    public String countAndSayAux(int n) {
         if(n == 1) return "1";
-        return RLE(countAndSayAux(n-1));
+        return RLE(countAndSay(n-1));
     }
 
     private String RLE(String s) {
