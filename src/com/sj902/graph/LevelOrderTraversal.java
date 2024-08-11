@@ -1,5 +1,7 @@
 package com.sj902.graph;
 
+import com.sj902.tree.TreeNode;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
