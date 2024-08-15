@@ -18,24 +18,23 @@ public class ShipWithinDays {
             long m = l + ((h - l) / 2);
             if (canShip(weights, days, m)) {
                 res = m;
-                l = m + 1;
-            } else h = m - 1;
+                h = m - 1;
+            } else l = m + 1;
         }
         return (int) res;
     }
 
     private static boolean canShip(int[] weights, int days, long m) {
-        System.out.println(m);
         int j = 0;
+        int res = 1;
         int curr = 0;
-        int res = 0;
-        while (j < weights.length) {
-            curr = curr + weights[j];
-            if (curr > m) {
-                ++res;
+        while (j<weights.length){
+            if(curr + weights[j]>m){
                 curr = 0;
+                ++res;
             }
-            j++;
+            curr = curr+weights[j];
+            ++j;
         }
         return res <= days;
     }

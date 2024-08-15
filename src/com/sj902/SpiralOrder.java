@@ -6,55 +6,39 @@ import java.util.List;
 
 public class SpiralOrder {
     public static void main(String[] args) {
-        System.out.println(Arrays.toString(spiralOrder(new int[][]{{1,2},{3,4},{5,6}})));
     }
 
-    public static int[] spiralOrder(final int[][] A) {
+    public List<Integer> spiralOrder(final int[][] A) {
 
-        int n = A.length;
-        int m = A[0].length;
-        int t = 0;
-        int l = 0;
-        int r = m - 1;
-        int b = n - 1;
+        int m = A.length;
+        int n = A[0].length;
+        int r1 = 0;
+        int c1 = 0;
+        int r2 = m - 1;
+        int c2 = n - 1;
 
         List<Integer> res = new ArrayList<>();
-        while (t <= b && l <= r) {
-            int i = 0;
-            i = l;
-            while (i <= r) {
-                res.add(A[t][i]);
-                ++i;
+        while (r2>=r1 && c2>=c1){
+            for (int i = c1; i <=c2 ; i++) {
+                res.add(A[r1][i]);
             }
-            ++t;
-
-            i = t;
-            while (i <= b) {
-                res.add(A[i][r]);
-                ++i;
+            ++r1;
+            if(r2>r1)break;
+            for (int i = r1; i <=r2 ; i++) {
+                res.add(A[i][c2]);
             }
-            --r;
-
-
-            i = r;
-            while (i >= l) {
-                res.add(A[b][i]);
-                --i;
+            --c2;
+            if (c1 > c2) break;
+            for (int i = c2; i >=c1 ; i--) {
+                res.add(A[r2][i]);
             }
-            --b;
-
-
-            i = b;
-            while (i >= t) {
-                res.add(A[i][l]);
-                --i;
+            --r2;
+            if (r1 > r2) break;
+            for (int i = r2; i >=r1 ; i--) {
+                res.add(A[i][c1]);
             }
-            ++l;
+            ++c1;
         }
-        int[] a = new int[res.size()];
-        for (int i = 0; i < res.size(); i++) {
-            a[i] = res.get(i);
-        }
-        return a;
+        return res;
     }
 }
