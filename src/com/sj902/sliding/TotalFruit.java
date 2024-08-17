@@ -11,29 +11,24 @@ public class TotalFruit {
 
     public static int totalFruit(int[] s) {
         HashMap<Integer, Integer> map = new HashMap<>();
-
         int begin = 0;
         int end = 0;
         int res = 0;
-        int counter = 0;
-
-
         while (end < s.length) {
             int c = s[end];
-            map.put(c, map.getOrDefault(c, 0) + 1);
-            if (map.size() > 2) counter++;
-
+            map.put(s[end], map.getOrDefault(s[end], 0) + 1);
             end++;
-
-            while (counter > 0) {
+            int counter = map.size();
+            while (counter > 2) {
                 int q = s[begin];
                 map.put(q, map.get(q) - 1);
                 if (map.get(q) == 0) {
-                    counter--;
+                    map.remove(q);
                 }
-                begin++;
+                counter = map.size();
+                ++begin;
             }
-            res = Math.max(res, end - begin);
+            res = Math.max(res, end - begin + 1);
         }
         return res;
     }
