@@ -1,38 +1,28 @@
 package com.sj902.sliding;
 
-import javafx.print.Collation;
-
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedList;
 
 public class MaxSlidingWindow {
-    public static void main(String[] args) {
-        System.out.println(Arrays.toString(maxSlidingWindow(new int[]{1, 3, -1, -3, 5, 3, 6, 7}, 3)));
-    }
-
-    static public int[] maxSlidingWindow(int[] nums, int k) {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int n = nums.length;
+        int[] res = new int[n-k+1];
         Deque<Integer> dq = new LinkedList<>();
         int begin = 0;
         int end = 0;
-
-        while (end < k-1) {
-            while (!dq.isEmpty() && nums[dq.peekLast()] < nums[end]) dq.removeLast();
-            dq.addLast(end);
-            ++end;
+        int l = 0;
+        while (end-begin+1<k){
+            while (!dq.isEmpty() && nums[dq.peekLast()]<nums[end]) dq.removeLast();
+            dq.addLast(end++);
         }
-
-        int[] res = new int[nums.length - k + 1];
-        int q = 0;
-        while (end < nums.length) {
-            while (!dq.isEmpty() && dq.peekFirst() < begin)dq.pollFirst();
-            while (!dq.isEmpty() && nums[dq.peekLast()] < nums[end]) dq.removeLast();
+        while (end<n){
+            while (!dq.isEmpty() && nums[dq.peekLast()]<nums[end]) dq.removeLast();
+            while (!dq.isEmpty() && dq.peekFirst()<begin) dq.removeFirst();
             dq.addLast(end);
-            res[q++] = nums[dq.peekFirst()];
-            ++begin;
-            System.out.println(end + ":" + dq);
+            res[l++] = dq.peekFirst();
             ++end;
+            ++begin;
         }
         return res;
     }
