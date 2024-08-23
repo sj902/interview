@@ -2,12 +2,12 @@ package com.sj902.graph;
 
 import java.util.*;
 
-class UF {
+class UF1 {
     int n;
     int[] parent;
     int[] size;
 
-    public UF(int n) {
+    public UF1(int n) {
         this.n = n;
         parent = new int[n];
         size = new int[n];
@@ -39,7 +39,7 @@ class UF {
 
 public class AccountsMerge {
     public List<List<String>> accountsMerge(List<List<String>> accounts) {
-        UF uf = new UF(accounts.size());
+        UF1 uf = new UF1(accounts.size());
         HashMap<String, Integer> parents = new HashMap<>();
 
 
