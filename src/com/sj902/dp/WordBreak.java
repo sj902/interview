@@ -5,33 +5,20 @@ import java.util.List;
 import java.util.Set;
 
 public class WordBreak {
-    boolean[][] res;
-    boolean[][] visited;
+    HashSet<String> dict;
 
     public boolean wordBreak(String s, List<String> wordDict) {
-        visited = new boolean[s.length()+1][s.length()+1];
-        res = new boolean[s.length()+1][s.length()+1];
-        return aux(s, new HashSet<>(wordDict),0, s.length()-1);
+        dict = new HashSet<>(wordDict);
+        return aux(s, 0, s.length() - 1);
     }
-    public boolean aux(String s, Set<String> wordDict, int start, int end) {
-        if(s.length()==0) return true;
-        if(visited[start][end]) return res[start][end];
 
+    private boolean aux(String s, int start, int end) {
+        if (dict.contains(s.substring(start, end + 1))) return true;
 
-        if(wordDict.contains(s.substring(start, end+1))) {
-            visited[start][end] = true;
-            return res[start][end] = true;
+        for (int i = start + 1; i < end; i++) {
+            boolean k = aux(s, start, i) && aux(s, i + 1, end);
+            if (k) return true;
         }
-
-        for (int i = start; i < end; i++) {
-            boolean a = aux(s,wordDict,start, i);
-            boolean b = aux(s,wordDict,i+1,end);
-            if( a && b){
-                visited[start][end] = true;
-                return res[start][end] =true;
-            }
-        }
-        visited[start][end] = true;
-        return res[start][end] =false;
+        return false;
     }
 }
