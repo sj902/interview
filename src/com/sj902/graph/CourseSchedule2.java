@@ -2,61 +2,51 @@ package com.sj902.graph;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Stack;
 
 public class CourseSchedule2 {
-    public static void main(String[] args) {
-        System.out.println(Arrays.toString(findOrder(2, new int[][]{{1, 0}})));
-    }
+    List<List<Integer>> adj;
+    Stack<Integer> stack;
+    boolean[] visited;
+    boolean[] recStack;
 
-    public static int[] findOrder(int n, int[][] prerequisites) {
-        int[] res = new int[n];
-        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
-
-        for (int i = 0; i < n; ++i) {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        adj = new ArrayList<>();
+        stack = new Stack<>();
+        visited = new boolean[numCourses];
+        recStack = new boolean[numCourses];
+        int[] res = new int[numCourses];
+        for (int i = 0; i < numCourses; i++) {
             adj.add(new ArrayList<>());
         }
-
-        for (int i = 0; i < prerequisites.length; ++i) {
-            adj.get(prerequisites[i][0]).add(prerequisites[i][1]);
+        for (int[] edge : prerequisites) {
+            adj.get(edge[0]).add(edge[1]);
         }
-
-        boolean[] visited = new boolean[n];
-        boolean[] recStack = new boolean[n];
-        Stack<Integer> stack = new Stack<>();
-
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < numCourses; i++) {
             if (!visited[i]) {
-                boolean k = dfs(visited, recStack, stack, adj, i);
-                if (k) return new int[]{};
+                if (!dfs(i)) return new int[]{};
             }
         }
-
-        int u = 0;
-
+        int q = 0;
         while (!stack.isEmpty()) {
-            res[u] = stack.pop();
-            u++;
+            res[q++] = stack.pop();
         }
         return res;
-
     }
 
-    private static boolean dfs(boolean[] visited, boolean[] recStack, Stack<Integer> stack, ArrayList<ArrayList<Integer>> adj, int n) {
-        visited[n] = true;
-        recStack[n] = true;
-
-        for (int node : adj.get(n)) {
-            if (recStack[node]) {
-                return true;
-            }
-            if (!visited[node] && dfs(visited, recStack, stack, adj, node)) {
-                return true;
+    private boolean dfs(int i) {
+        visited[i] = true;
+        recStack[i] = true;
+        for(int node: adj.get(i)){
+            if(recStack[node]) return false;
+            if(!visited[node]){
+                boolean k = dfs(node);
+                if(!k) return false;
             }
         }
-
-        stack.push(n);
-        recStack[n] = false;
-        return false;
+        recStack[i] = false;
+        stack.push(i);
+        return true;
     }
 }
