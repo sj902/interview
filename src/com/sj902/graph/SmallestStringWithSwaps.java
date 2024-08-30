@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
 
-class UF {
+class UF2 {
     int[] parent;
     String s;
 
-    UF(String s) {
+    UF2(String s) {
         int n = s.length();
         parent = new int[n];
         for (int i = 0; i < n; i++) {
@@ -46,7 +46,7 @@ class UF {
 
 class SmallestStringWithSwaps {
     public String smallestStringWithSwaps(String s, List<List<Integer>> pairs) {
-        UF u = new UF(s);
+        UF2 u = new UF2(s);
         for (List<Integer> pair : pairs) {
             u.union(pair.get(0), pair.get(1));
         }

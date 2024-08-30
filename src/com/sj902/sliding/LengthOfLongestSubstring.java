@@ -4,32 +4,25 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class LengthOfLongestSubstring {
-    public static void main(String[] args) {
-        System.out.println(lengthOfLongestSubstring("abcabcbb"));
-    }
-
-    public static int lengthOfLongestSubstring(String s) {
-        HashMap<Character, Integer> map = new HashMap<>();
+    public int lengthOfLongestSubstring(String s) {
+        int res = 0;
         int begin = 0;
         int end = 0;
+        HashMap<Character, Integer> map = new HashMap<>();
         int counter = 0;
-        int res = 0;
-
-        while (end < s.length()) {
+        while(end<s.length()){
             char c = s.charAt(end);
-            map.put(c, map.getOrDefault(c, 0) + 1);
-            if (map.get(c) > 1) counter++;
-            end++;
-
-            while (counter > 0) {
+            map.put(c, map.getOrDefault(c, 0)+1);
+            if(map.get(c)>1)counter++;
+            ++end;
+            while (counter>0){
                 char q = s.charAt(begin);
-                if (map.get(q) > 1) counter--;
-                map.put(q, map.getOrDefault(q, 0) - 1);
+                map.put(q, map.get(q)-1);
+                if(map.get(q)==1)counter--;
                 ++begin;
             }
-            res = Math.max(res, end - begin);
+            res = Math.max(res, end-begin);
         }
-
         return res;
     }
 }
