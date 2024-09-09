@@ -1,113 +1,81 @@
 package com.sj902.lru;
 
 import java.util.HashMap;
+import java.util.Map;
 
-class ListNode {
-    ListNode prev, next;
-    int key, val;
+class DLL {
+    int val;
+    int key;
+    DLL prev;
+    DLL next;
 
-    public ListNode(ListNode prev, ListNode next, int key, int val) {
-        this.prev = prev;
-        this.next = next;
+    DLL(int key, int val) {
         this.key = key;
         this.val = val;
     }
 }
 
 class LRUCache {
+
+    Map<Integer, DLL> map;
+    DLL head;
+    DLL tail;
+    int size;
     int capacity;
-    HashMap<Integer, ListNode> map;
-
-    ListNode head;
-    ListNode tail;
-
 
     public LRUCache(int capacity) {
-        this.capacity = capacity;
-        map = new HashMap<>();
-        head = new ListNode(null, null, 0, 0);
-        tail = new ListNode(null, null, 0, 0);
-        tail.prev = head;
+        head = new DLL(-1, 0);
+        tail = new DLL(-1, 0);
         head.next = tail;
+        tail.prev = head;
+        map = new HashMap<>();
+        size = 0;
+        this.capacity = capacity;
     }
 
     public int get(int key) {
         if (map.containsKey(key)) {
-            ListNode n = map.get(key);
-            remove(n);
-            add(n);
-            return n.val;
-        } else {
-            return -1;
-        }
+            int val = map.get(key).val;
+            remove(key);
+            add(key, val);
+            return val;
+        } else return -1;
+    }
+
+    private void remove() {
+        map.remove(head.next.key);
+        DLL next = head.next.next;
+        next.prev = head;
+        head.next = next;
+    }
+
+    private void remove(int key) {
+        DLL node = map.get(key);
+        map.remove(key);
+        DLL next = node.next;
+        DLL prev = node.prev;
+        next.prev = prev;
+        prev.next = next;
+    }
+
+    private void add(int key, int value) {
+        DLL node = new DLL(key, value);
+        DLL prev = tail.prev;
+        prev.next = node;
+        tail.prev = node;
+        node.next = tail;
+        node.prev = prev;
+        map.put(key, node);
     }
 
     public void put(int key, int value) {
         if (map.containsKey(key)) {
-            ListNode n = map.get(key);
-            n.val = value;
-            remove(n);
-            add(n);
+            remove(key);
+        } else if (size == capacity) {
+            remove();
         } else {
-            if (map.size() == capacity) {
-                map.remove(tail.key);
-                removeTail();
-            }
-            ListNode t = new ListNode(null, null, key, value);
-            add(t);
-            map.put(key, t);
+            ++size;
         }
-    }
-
-    void add(ListNode node) {
-        node.prev = null;
-        node.next = head;
-
-        if (head != null) {
-            head.prev = node;
-        }
-
-        head = node;
-        if (tail == null) {
-            tail = node;
-        }
-    }
-
-
-    void remove(ListNode node) {
-        if (tail == node) {
-            removeTail();
-        } else {
-            if (node.prev != null) node.prev.next = node.next;
-            if (node.next != null) node.next.prev = node.prev;
-        }
-    }
-
-    void removeTail() {
-        if (tail != null && tail.prev != null) {
-            tail = tail.prev;
-            tail.next = null;
-        }
-    }
-
-
-    public static void main(String[] args) {
-        LRUCache obj = new LRUCache(2);
-//        obj.put(1,1);
-//        obj.put(2,2);
-//        obj.put(3,3);
-//        obj.put(4,4);
-//        obj.put(5,5);
-//        obj.put(6,6);
-//        obj.put(7,7);
-//        obj.put(6,6);
-        obj.put(2, 1);
-        obj.put(3, 2);
-        System.out.println(obj.get(3));
-        System.out.println(obj.get(2));
-        obj.put(4, 3);
-        System.out.println(obj.get(2));
-        System.out.println(obj.get(3));
-        System.out.println(obj.get(4));
+        add(key, value);
     }
 }
