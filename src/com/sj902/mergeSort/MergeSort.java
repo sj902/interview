@@ -11,13 +11,16 @@ class S {
 }
 
 public class MergeSort {
+    int[] temp;
+
     public void mergeSort(int[] nums) {
+        temp = new int[nums.length];
         mergeAux(nums, 0, nums.length - 1);
     }
 
     private void mergeAux(int[] nums, int start, int end) {
         if (start < end) {
-            int mid = (start + end) / 2;
+            int mid = start + ((end - start) / 2);
             mergeAux(nums, start, mid);
             mergeAux(nums, mid + 1, end);
             merge(nums, start, mid, end);
@@ -25,27 +28,31 @@ public class MergeSort {
     }
 
     private void merge(int[] nums, int start, int mid, int end) {
-        int a1[] = new int[mid-start+1];
-        int a2[] = new int[end-mid];
-
-        for(int i=start;i<=mid;i++){
-            a1[i-start] = nums[i];
+        for (int i = start; i <= end; i++) {
+            temp[i] = nums[i];
         }
 
-        for(int i=mid+1;i<=end;i++){
-            a2[i-mid-1] = nums[i];
+        int i = start;
+        int j = mid+1;
+        int p = start;
+        while (i <= mid && j <= end) {
+            if (nums[i] < nums[j]) {
+                temp[p++] = nums[i++];
+            } else {
+                temp[p++] = nums[j++];
+            }
         }
-        int[] res = new int[end-start+1];
-        int i = 0;
-        int j = 0;
-        int k = start;
-
-        while(i<a1.length && j<a2.length) {
-            if(a1[i]<=a2[j]) nums[k++] = a1[i++];
-            else nums[k++] = a2[j++];
+        while (i <= mid) {
+            temp[p++] = nums[i++];
+        }
+        while (j <= end) {
+            temp[p++] = nums[j++];
         }
 
-        while(i<a1.length) nums[k++] = a1[i++];
-        while(j<a2.length) nums[k++] = a2[j++];
+        for (i = start; i <= end; i++) {
+            nums[i] = temp[i];
+        }
     }
+
+
 }
