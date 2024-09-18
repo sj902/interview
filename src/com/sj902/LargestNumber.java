@@ -4,31 +4,21 @@ import java.util.Arrays;
 
 public class LargestNumber {
     public String largestNumber(int[] nums) {
-
+        String[] s = new String[nums.length];
         for (int i = 0; i < nums.length; i++) {
-            for (int j = i+1; j < nums.length; j++) {
-                int a = nums[i];
-                int b = nums[j];
-                if(compare(a, b)){
-                    int t = nums[i];
-                    nums[i] = nums[j];
-                    nums[j] = t;
-                }
-            }
+            s[i] = nums[i] + "";
         }
+        Arrays.sort(s, (a, b) -> compare(a,b));
         StringBuilder sb = new StringBuilder();
-        for (int n:nums) {
-            sb.append(n);
+        for (String value : s) {
+            sb.append(value);
         }
-        int i = 0;
-        while (i<sb.length() && sb.charAt(i)=='0') {
-            sb.deleteCharAt(i);
-            ++i;
-        }
-        return sb.length() == 0?"0":sb.toString();
+        while (sb.length() > 0 && sb.charAt(0) == '0') sb.deleteCharAt(0);
+        if (sb.length() == 0) return "0";
+        return sb.toString();
     }
 
-    private boolean compare(int a, int b) {
-        return Long.parseLong(a+""+b)<Long.parseLong(b+""+a);
+    private int compare(String a, String b) {
+       return  (b+a).compareTo(a+b);
     }
 }
