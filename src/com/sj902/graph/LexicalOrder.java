@@ -4,23 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LexicalOrder {
-    List<Integer> res;
-    int max;
     public List<Integer> lexicalOrder(int n) {
-        max = n;
-        res = new ArrayList<>();
-        aux("");
-        return res;
-    }
+        List<Integer> res = new ArrayList<>();
 
-    void  aux(String curr){
-        int c = Integer.parseInt(curr);
-        if(c>max) return;
-        if(c!=0){
-            res.add(c);
+        int i = 1;
+
+        for (int j = 1; j <= n; j++) {
+            res.add(i);
+            if (i * 10 <= n) {
+                i = i *10;
+            } else {
+                while (i%10 == 9 || i ==n){
+                    i = i/10;
+                }
+                ++i;
+            }
         }
-        for (int i = 0; i <= 9 ; i++) {
-            aux(curr+i);
-        }
+        return res;
     }
 }
