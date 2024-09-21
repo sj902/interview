@@ -1,16 +1,18 @@
 package com.sj902.backtracking;
 
 public class NumBST {
-    Integer[] res;
     public int numTrees(int n) {
-        if(res == null) res = new Integer[n+1];
-        if (n == 0) return 1;
-        if (n == 1) return 1;
-        if(res[n] != null) return res[n];
-        int r = 0;
-        for (int i = 1; i <= n; i++) {
-            r = r + (numTrees(n - i) * numTrees(i - 1));
+        Integer[] res = new Integer[n + 1];
+        res[0] = 1;
+        res[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            res[i] = 0;
+            int k = i - 1;
+            for (int j = 0; j < i; j++) {
+                int l = k - j;
+                res[i] = res[l] * res[i];
+            }
         }
-        return res[n] = r;
+        return res[n];
     }
 }
