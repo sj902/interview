@@ -4,22 +4,33 @@ import java.util.Arrays;
 
 public class CoinChange {
     public int coinChange(int[] coins, int amount) {
-        int[][] res = new int[coins.length + 1][amount + 1];
-        for (int i = 0; i <= coins.length; i++) {
-            for (int j = 0; j <= amount; j++) {
-                if (j == 0) {
-                    res[i][j] = 0;
-                } else if (i == 0) {
-                    res[i][j] = Integer.MAX_VALUE;
+        int[][] dp = new int[amount + 1][coins.length + 1];
+        for (int i = 0; i <= amount; i++) {
+            Arrays.fill(dp[i], Integer.MAX_VALUE);
+        }
+
+        for (int i = 0; i <= amount; i++) {
+            for (int j = coins.length - 1; j >= 0; j--) {
+                if (i == 0) {
+                    dp[i][j] = 0;
                 } else {
-                    if (j >= coins[i - 1] && res[i][j - coins[i - 1]] != Integer.MAX_VALUE) {
-                        res[i][j] = Math.min(res[i - 1][j], 1 + res[i][j - coins[i - 1]]);
-                    } else {
-                        res[i][j] = res[i - 1][j];
+                    if (i - coins[j] >= 0) {
+                        int take = 0;
+                        int k = dp[i - coins[j]][j];
+                        if (k == Integer.MAX_VALUE) {
+                            take = Integer.MAX_VALUE;
+                        } else {
+                            take = k + 1;
+                        }
+                        dp[i][j] = take;
+
                     }
+                    dp[i][j] = Math.min(dp[i][j], dp[i][j + 1]);
                 }
             }
         }
-        return res[coins.length][amount] == Integer.MAX_VALUE ? -1 : res[coins.length][amount];
+
+        if (dp[amount][0] == Integer.MAX_VALUE) return -1;
+        return dp[amount][0];
     }
 }

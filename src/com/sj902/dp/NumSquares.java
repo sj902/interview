@@ -1,23 +1,19 @@
 package com.sj902.dp;
 
 public class NumSquares {
-    int max;
-    Integer[][] res;
-
     public int numSquares(int n) {
-        max = (int) Math.floor(Math.sqrt(n));
-        res = new Integer[max + 1][n + 1];
-        return aux(1, n);
+        Integer[] res = new Integer[n + 1];
+        res[0] = 0;
+        res[1] = 0;
+        for (int i = 2; i <= n; i++) {
+            int re = Integer.MAX_VALUE;
+            for (int j = 1; j <= Math.sqrt(n); j++) {
+                int k = res[i - (j * j)];
+                if (k != Integer.MAX_VALUE) {
+                    re = Math.min(re, k + 1);
+                }
+            }
+        }
+        return res[n];
     }
-
-    int aux(int idx, int n) {
-        if (n == 0) return 0;
-        if (n < 0) return 100000;
-        if (idx > max) return 100000;
-        if (res[idx][n] != null) return res[idx][n];
-        int include = 1 + aux(idx, n - (idx * idx));
-        int exclude = aux(idx + 1, n);
-        return res[idx][n] = Math.min(exclude, include);
-    }
-
 }
