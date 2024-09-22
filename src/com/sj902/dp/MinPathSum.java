@@ -1,22 +1,27 @@
 package com.sj902.dp;
 
 public class MinPathSum {
-    Integer[][] res;
     public int minPathSum(int[][] grid) {
-        res = new Integer[grid.length][grid[0].length];
-        return minPathSumAux(grid, 0, 0);
-    }
-
-    private int minPathSumAux(int[][] grid, int i, int j) {
-        int m = grid.length - 1;
-        int n = grid[0].length - 1;
-        if(i ==m && j == n) return grid[i][j];
-        if(i>m || j >n) return Integer.MAX_VALUE;
-        if(res[i][j]!=null) return res[i][j];
-        int a = Integer.MAX_VALUE;
-        int b = Integer.MAX_VALUE;
-        if(i+1<=m) a = minPathSumAux(grid, i+1, j);
-        if(j+1<=n) b = minPathSumAux(grid, i, j+1);
-        return res[i][j]=Math.min(a,b)+grid[i][j];
+        int[] res = new int[grid[0].length];
+        int m = grid.length;
+        int n = grid[0].length;
+        for (int x = 0; x < m; x++) {
+            for (int y = 0; y < n; y++) {
+                if (x == 0 && y == 0) {
+                    res[y] = grid[0][0];
+                } else {
+                    int left = Integer.MAX_VALUE;
+                    if (x - 1 >= 0) {
+                        left = grid[x][y] + res[y];
+                    }
+                    int up = Integer.MAX_VALUE;
+                    if (y - 1 >= 0) {
+                        up = grid[x][y] + res[y - 1];
+                    }
+                    res[y] = Math.min(up, left);
+                }
+            }
+        }
+        return res[n - 1];
     }
 }
