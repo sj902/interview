@@ -3,27 +3,27 @@ package com.sj902.trie;
 
 import java.util.HashMap;
 
-class TrieNode {
+class TrieNodeasdf {
     boolean isLast;
-    HashMap<Character, TrieNode> map;
+    HashMap<Character, TrieNodeasdf> map;
 
-    TrieNode() {
+    TrieNodeasdf() {
         map = new HashMap<>();
         isLast = false;
     }
 }
 
-class Trie {
-    TrieNode start;
+class Trieert {
+    TrieNodeasdf start;
 
-    Trie() {
-        start = new TrieNode();
+    Trieert() {
+        start = new TrieNodeasdf();
     }
 
     void add(String s) {
-        TrieNode n = start;
+        TrieNodeasdf n = start;
         for (int i = 0; i < s.length(); i++) {
-            n.map.putIfAbsent(s.charAt(i), new TrieNode());
+            n.map.putIfAbsent(s.charAt(i), new TrieNodeasdf());
             n = n.map.get(s.charAt(i));
         }
         n.isLast = true;
@@ -33,7 +33,7 @@ class Trie {
         return searchAux(s, start, 0);
     }
 
-    private boolean searchAux(String s, TrieNode t, int idx) {
+    private boolean searchAux(String s, TrieNodeasdf t, int idx) {
         if (idx == s.length() - 1) {
             return t.isLast;
         }
@@ -55,10 +55,10 @@ class Trie {
 
 
 public class WordDictionary {
-    Trie t;
+    Trieert t;
 
     public WordDictionary() {
-        t = new Trie();
+        t = new Trieert();
     }
 
     public void addWord(String word) {
