@@ -8,12 +8,12 @@ public class ArrayRankTransform {
         int[] cp = Arrays.copyOf(arr, arr.length);
         Arrays.sort(cp);
         HashMap<Integer, Integer> map = new HashMap<>();
-        map.put(cp[0], 1);
-        int prev = cp[0];
-        for (int i = 1; i < cp.length; i++) {
-            if (cp[i] > prev) {
-                map.put(cp[i], map.get(prev) + 1);
-                prev = cp[i];
+        int prev = Integer.MIN_VALUE;
+        map.put(prev, 0);
+        for (int j : cp) {
+            if (j > prev) {
+                map.put(j, map.get(prev) + 1);
+                prev = j;
             }
         }
         for (int i = 0; i < arr.length; i++) {
