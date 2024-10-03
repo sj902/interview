@@ -1,5 +1,6 @@
 package com.sj902.prefixSum;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class MakeSumDivisiblebyP {
