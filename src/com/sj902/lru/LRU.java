@@ -7,7 +7,7 @@ public class LRU {
     LinkedHashMap<Integer, Integer> lhm;
 
     public LRU(int capacity) {
-        lhm = new LinkedHashMap<>(capacity, 0.75f, true) {
+        lhm = new LinkedHashMap<Integer, Integer>(capacity, 0.75f, true) {
             protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
                 return this.size() > capacity;
             }

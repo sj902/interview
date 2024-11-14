@@ -1,105 +1,80 @@
 package com.sj902.lfu;
 
+import javafx.util.Pair;
+
 import java.util.HashMap;
-
-class DLL {
-    DLL next;
-    DLL key;
-    DLL prev;
-    Node countNode;
-    int value;
-}
-
-class Node {
-    Node next;
-    Node prev;
-    int count;
-    DLL keyList;
-}
+import java.util.LinkedHashSet;
 
 class LFUCache {
+
+    HashMap<Integer, Pair<Integer, Integer>> map;
+    HashMap<Integer, LinkedHashSet<Integer>> fmap;
     int capacity;
-    HashMap<Integer, DLL> map;
-    HashMap<Integer, Node> countMap;
-
-    Node countsFirst;
-    Node countsLast;
-
+    int minFreq;
 
     public LFUCache(int capacity) {
         this.capacity = capacity;
         map = new HashMap<>();
-        countMap = new HashMap<>();
-        Node zeroNode = new Node();
-        zeroNode.count = 0;
-        Node lastNode = new Node();
-        lastNode.count = 0;
-        zeroNode.next = lastNode;
-        lastNode.prev = zeroNode;
-        countsFirst = zeroNode;
-        countsLast = lastNode;
+        fmap = new HashMap<>();
+        minFreq = Integer.MAX_VALUE;
     }
 
     public int get(int key) {
-        if (!map.containsKey(key)) return -1;
-        DLL dllNode = map.get(key);
-        int value = dllNode.value;
-        int count = dllNode.countNode.count + 1;
-        delete(dllNode);
-        put(key, value, count);
-
-        return dllNode.value;
-    }
-
-    private void delete() {
-        if(map.size() == 0) return;
-        Node n = countsFirst.next;
-        DLL dll = n.keyList;
-        map.remove(dll.key);
-        if(dll.next == null){
-            n.prev.next = n.next;
-            n.next.prev = n.prev;
-            countMap.remove(n.count);
-        } else {
-            n.keyList = dll.next;
-            dll.next.prev = null;
+        if (!map.containsKey(key)) {
+            return -1;
         }
-    }
 
-    private void delete(DLL dll) {
-        Node n = dll.countNode;
-        map.remove(dll.key);
-
-        if(dll.prev == null && dll.next == null){
-            n.prev.next = n.next;
-            n.next.prev = n.prev;
-            countMap.remove(n.count);
-        } else if(dll.prev == null){
-            n.keyList = dll.next;
-            dll.next.prev = null;
-        } else{
-           dll.prev.next =dll.next;
-           dll.next.prev =dll.prev;
+        int res = map.get(key).getKey();
+        int freq = map.get(key).getValue();
+        fmap.get(freq).remove(key);
+        LinkedHashSet<Integer> set = fmap.getOrDefault(freq + 1, new LinkedHashSet<>());
+        set.add(key);
+        map.remove(key);
+        if (fmap.get(freq).isEmpty()) {
+            if (minFreq == freq) {
+                minFreq = freq + 1;
+            }
+            fmap.remove(freq);
         }
-    }
-
-    private void put(int key, int value, int count) {
-//        if(countMap.c)
+        fmap.put(freq + 1, set);
+        map.put(key, new Pair<>(res, freq + 1));
+        return res;
     }
 
     public void put(int key, int value) {
-        if(map.containsKey(key)){
-            DLL dllNode = map.get(key);
-            int count = dllNode.countNode.count + 1;
-            delete(map.get(key));
-            put(key, value, count);
-        } else {
-            if(capacity == map.size()){
-                delete();
-            } else {
-                put(key, value, 1);
-            }
-        }
+        int frequency = 1;
+        if (map.containsKey(key)) {
+            // remove this
+            int freq = map.get(key).getValue();
+            fmap.get(freq).remove(key);
 
+            map.remove(key);
+            if (fmap.get(freq).isEmpty()) {
+                if (minFreq == freq) {
+                    minFreq += 1;
+                }
+                fmap.remove(freq);
+            }
+            frequency = freq + 1;
+
+
+        } else if (map.size() == this.capacity) {
+            frequency = 1;
+            int freq = minFreq;
+            LinkedHashSet<Integer> set = fmap.get(freq);
+            int first = set.iterator().next();
+            fmap.get(freq).remove(first);
+            map.remove(first);
+            if (fmap.get(freq).isEmpty()) {
+                fmap.remove(freq);
+            }
+            minFreq = 1;
+        }
+        // add this
+        LinkedHashSet<Integer> set = fmap.getOrDefault(frequency, new LinkedHashSet<>());
+        set.add(key);
+        fmap.put(frequency, set);
+        map.put(key, new Pair<>(value, frequency));
+        minFreq = Math.min(frequency, minFreq);
     }
 }
