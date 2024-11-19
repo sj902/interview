@@ -1,32 +1,34 @@
 package com.sj902.sliding;
 
+import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedList;
 
 public class ShortestSubarray {
     public int shortestSubarray(int[] nums, int k) {
         int n = nums.length;
-        int[] prefixSum = new int[n + 1];
+        long[] prefixSum = new long[n + 1];
         for (int i = 0; i < n; i++) {
             prefixSum[i + 1] = prefixSum[i] + nums[i];
         }
+        Deque<Integer> dq = new ArrayDeque<>();
 
-        Deque<Integer> dq = new LinkedList<>();
         int res = n + 1;
 
         for (int i = 0; i <= n; i++) {
-            while (!dq.isEmpty() && prefixSum[i] - prefixSum[dq.peekFirst()] >= k) {
-                res = Math.min(res, i - dq.pollFirst());
+            while (!dq.isEmpty() && prefixSum[i] < prefixSum[dq.peekLast()]) {
+                dq.pollLast();
             }
 
-            while (!dq.isEmpty() && prefixSum[dq.peekLast()] >= prefixSum[i]) {
-                dq.pollLast();
+            while (!dq.isEmpty() && prefixSum[dq.peekLast()] - prefixSum[dq.peekFirst()] >= k) {
+                res = Math.min(res, dq.peekLast() - dq.peekFirst() + 1);
+                dq.pollFirst();
             }
 
             dq.offerLast(i);
         }
 
 
-        return res <= n ? res : -1;
+        return res == n + 1 ? -1 : res;
     }
 }
