@@ -5,8 +5,6 @@ import java.util.HashMap;
 class Solution{
     public static void main(String[] args) {
         Trie t  = new Trie();
-        t.insert("apple");
-        System.out.println(t.search("apple"));
     }
 }
 

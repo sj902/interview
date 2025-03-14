@@ -1,7 +1,9 @@
+package cf;
+
 import java.io.*;
 import java.util.*;
 
-public class Solution {
+public class OracAndModels {
     static class FastReader {
         BufferedReader br;
         StringTokenizer st;

@@ -26,7 +26,7 @@ class Pos {
 public class Wayfair {
 
     public static void main(String[] args) {
-        System.out.println(returnMoves(new int[][]{{0,0,1,0},{0,0,0,0}}, 2));
+        System.out.println(returnMoves(new int[][]{{0, 0, 1, 0}, {0, 0, 0, 0}}, 2));
     }
 
     static int returnMoves(int[][] grid, int k) {
@@ -56,10 +56,10 @@ public class Wayfair {
                     int newX = x + (i * dir[0]);
                     int newY = y + (i * dir[1]);
                     String str = newX + "-" + newY;
-                    if (newX >= 0 && newY >= 0 && newY <= n - 1 && newX <= m - 1 && grid[newX][newY]==1){
+                    if (newX >= 0 && newY >= 0 && newY <= n - 1 && newX <= m - 1 && grid[newX][newY] == 1) {
                         break;
                     }
-                    if (!visited.contains(str) && newX >= 0 && newY >= 0 && newY <= n - 1 && newX <= m - 1 && grid[newX][newY]!=1) {
+                    if (!visited.contains(str) && newX >= 0 && newY >= 0 && newY <= n - 1 && newX <= m - 1 && grid[newX][newY] != 1) {
                         visited.add(str);
                         q.add(new Pos(newX, newY, moves + 1));
                     }

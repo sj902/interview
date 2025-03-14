@@ -19,12 +19,14 @@ public class CombinationSum2 {
             res.add(new ArrayList<>(curr));
             return;
         }
-        if (target < 0 || i>=candidates.length) return;
+        if (target < 0 || i >= candidates.length) return;
         curr.add(candidates[i]);
-        combinationSumAux(candidates, target-candidates[i], i+1, curr);
-        curr.remove(curr.size()-1);
+        combinationSumAux(candidates, target - candidates[i], i + 1, curr);
+        curr.remove(curr.size() - 1);
         int k = candidates[i];
-        while (i< candidates.length && candidates[i]==k)++i;
+        while (i < candidates.length && candidates[i] == k) {
+            ++i;
+        }
         combinationSumAux(candidates, target, i, curr);
     }
 }
